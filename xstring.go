@@ -30,35 +30,35 @@ func (s_ *XString) Append(text string) *XString {
 // Contains
 // ---------------------------------------------------------------//
 func (s_ XString) Contains(pattn string) bool {
-  return strings.Contains(s_.String(), pattn)
+  return strings.Contains(string(s_), pattn)
 }
 
 // -------------------------------------------------------------- //
 // Contains
 // ---------------------------------------------------------------//
 func (s_ XString) Copy() XString {
-  return XString(s_.String())
+  return XString(string(s_))
 }
 
 // -------------------------------------------------------------- //
 // HasPrefix
 // ---------------------------------------------------------------//
 func (s_ XString) HasPrefix(pattn string) bool {
-  return strings.HasPrefix(s_.String(), pattn)
+  return strings.HasPrefix(string(s_), pattn)
 }
 
 // -------------------------------------------------------------- //
 // HasSuffix
 // ---------------------------------------------------------------//
 func (s_ XString) HasSuffix(pattn string) bool {
-  return strings.HasSuffix(s_.String(), pattn)
+  return strings.HasSuffix(string(s_), pattn)
 }
 
 // -------------------------------------------------------------- //
 // Length
 // ---------------------------------------------------------------//
 func (s_ XString) Length() int {
-  return len(s_.String())
+  return len(string(s_))
 }
 
 // -------------------------------------------------------------- //
@@ -72,25 +72,25 @@ func (s_ *XString) Prepend(text string) *XString {
 // -------------------------------------------------------------- //
 // Replace
 // ---------------------------------------------------------------//
-func (s_ *XString) Replace(old, new string, n int) XString {
+func (s_ *XString) Replace(old, new string, n int) *XString {
   *s_ = XString(strings.Replace(s_.String(), old, new, n))
-  return *s_
+  return s_
 }
 
 // -------------------------------------------------------------- //
 // ReplaceAll
 // ---------------------------------------------------------------//
-func (s_ *XString) ReplaceAll(old, new string) XString {
+func (s_ *XString) ReplaceAll(old, new string) *XString {
   *s_ = XString(strings.ReplaceAll(s_.String(), old, new))
-  return *s_
+  return s_
 }
 
 // -------------------------------------------------------------- //
 // Set
 // ---------------------------------------------------------------//
-func (s_ *XString) Set(value string) XString {
+func (s_ *XString) Set(value string) *XString {
   *s_ = XString(value)
-  return *s_
+  return s_
 }
 
 // -------------------------------------------------------------- //
@@ -114,21 +114,23 @@ func (s_ XString) SplitN(delim string, n int) []string {
 // -------------------------------------------------------------- //
 // SplitNKeepOne
 // ---------------------------------------------------------------//
-func (s_ XString) SplitNKeepOne(delim string, n, keep int) XString {
-  s := string(s_)
-  x := strings.SplitN(s, delim, n)
-  if (len(x)-1) < keep {
-    return XString("")
+func (s_ XString) SplitNKeepOne(delim string, n, keep int) *XString {
+  x := strings.SplitN(string(s_), delim, n)
+  var y XString
+  last := len(x)-1
+  if last < keep {
+    y = XString(x[last])
+  } else {
+    y = XString(x[keep])
   }
-  return XString(x[keep])
+  return &y
 }
 
 // -------------------------------------------------------------- //
 // SplitInThree
 // ---------------------------------------------------------------//
 func (s_ XString) SplitInThree(delim string) (XString, XString, XString) {
-  s := string(s_)
-  x := strings.SplitN(s, delim, 3)
+  x := strings.SplitN(string(s_), delim, 3)
   switch len(x) {
   case 1:
     return XString(x[0]), "", ""
@@ -142,8 +144,7 @@ func (s_ XString) SplitInThree(delim string) (XString, XString, XString) {
 // SplitInFour
 // ---------------------------------------------------------------//
 func (s_ XString) SplitInFour(delim string) (XString, XString, XString, XString) {
-  s := string(s_)
-  x := strings.SplitN(s, delim, 4)
+  x := strings.SplitN(string(s_), delim, 4)
   switch len(x) {
   case 1:
     return XString(x[0]), "", "", ""
@@ -166,21 +167,22 @@ func (s_ XString) String() string {
 // ToInt
 // ---------------------------------------------------------------//
 func (s_ XString) ToInt() (int, error) {
-  return strconv.Atoi(s_.String())
+  return strconv.Atoi(string(s_))
 }
 
 // -------------------------------------------------------------- //
 // Trim
 // ---------------------------------------------------------------//
 func (s_ XString) Trim() string {
-  return strings.TrimSpace(s_.String())
+  return strings.TrimSpace(string(s_))
 }
 
 // -------------------------------------------------------------- //
 // XTrim
 // ---------------------------------------------------------------//
-func (s_ XString) XTrim() XString {
-  return XString(strings.TrimSpace(s_.String()))
+func (s_ XString) XTrim() *XString {
+  y := XString(strings.TrimSpace(string(s_)))
+  return &y
 }
 
 // -------------------------------------------------------------- //
